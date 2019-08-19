@@ -9,7 +9,7 @@
 # @Copyright (C) 2019 ITGO Piotr Wołoszyn
 
 from txtdoc.abstract import TxtObject, TxtContainer
-
+from pprint import pprint
 
 class TxtBorder(object):
 
@@ -89,6 +89,16 @@ class TxtParagraph(TxtObject):
     def inner_width(self):
         return self.width - (self.border.width*2) - (self.border.padding*2)
 
+    def set_border(self, width=0, padding=0, style='*') -> TxtBorder:
+        """
+        Helper function to set a border
+        :param width:
+        :param padding:
+        :param style:
+        :return:
+        """
+        self.border = TxtBorder(self, width, padding, style)
+
     def append(self, text):
         """
         Appends string to the current paragraph
@@ -96,9 +106,16 @@ class TxtParagraph(TxtObject):
         """
 
         t_list = text.split('\n')
+        t_count = len(t_list)
+        i = 0
 
         for t in t_list:
-            t += '\n'
+
+            i += 1
+
+            if i != t_count:
+                t += '\n'
+
             words = t.split(' ')
             self.text_buffer += words
 
@@ -128,7 +145,8 @@ class TxtParagraph(TxtObject):
                 raise AttributeError('Not allowed align value, it should be of of: center, left, right')
 
             inner_line = self.border.wrap(line_format.format(txt, width=self.inner_width))
-            line = (" " * self.parent.ml) + inner_line + (" " * self.parent.mr) + self.parent.eol
+
+            line = self.parent.wrap_line(inner_line)
 
             return line
 
@@ -145,7 +163,6 @@ class TxtParagraph(TxtObject):
             ltmp = (line + ' ' + word).lstrip().rstrip('\n')
 
             if len(ltmp) > self.width:
-                line = line
                 content += self.writeln(line)
                 line = word
             else:

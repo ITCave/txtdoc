@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Filename : layout.py
 # @Date : 2019-08-14-16-22
-# @Poject: ITC-txtdoc
+# @Poject: txtdoc
 # @Author: Piotr Wołoszyn
 # @Website: http://itcave.eu
 # @Email: contact@itcave.eu
@@ -36,9 +36,8 @@ class TxtColumn(TxtDoc):
 class ColumnLayout(AbstractLayout, OrderedDict):
 
     def __init__(self, parent: TxtContainer, *args, **kwargs):
-        super(AbstractLayout, self).__init__(*args, **kwargs)
-        super(OrderedDict, self).__init__()
-
+        super().__init__(*args, **kwargs)
+        self.parent = parent
         self.width = parent.inner_width
         self.max_rows = 0
 
@@ -50,12 +49,12 @@ class ColumnLayout(AbstractLayout, OrderedDict):
             if total_width > self.width:
                 raise ValueError("Total sum of column widths exceeds the maximum allowed width (%s > %s) "
                                  % (total_width, self.width))
-            super(OrderedDict, self).__setitem__(key, value)
+            super().__setitem__(key, value)
 
-    def add_column(self, key, width, margins=(0,)):
+    def add_column(self, key, width, margins=(0,)) -> TxtColumn:
         # Placeholder XTODO Shortcut function
         c = TxtColumn(parent=None, width=width, margins=margins)
-        self[key] = c
+        self.__setitem__(key, c)
         return self[key]
 
     def total_column_width(self):
@@ -69,23 +68,38 @@ class ColumnLayout(AbstractLayout, OrderedDict):
 
     def render(self):
 
-        content = OrderedDict
+        c_content = OrderedDict()
         self.max_rows = 0
 
-        for k, v in self.items():
-            content[k] = v.render().split('\n')
+        for k, col in self.items():
 
-            if len(content[k]) > self.max_rows:
-                self.max_rows = len(content[k])
+            c_content[k] = col.render().split('\n')
 
-        for k in self.items():
-            print(k)
+            if len(c_content[k]) > 1:
+                c_content[k] = c_content[k][:-1]
+
+            if len(c_content[k]) > self.max_rows:
+                self.max_rows = len(c_content[k])
+
+        content = ''
+
+        for i in range(0, self.max_rows):
+
+            line = ''
+
+            for k, c in c_content.items():
+                try:
+                    line += c[i]
+                except IndexError:
+                    line += ' ' * self[k].width
+                except Exception:
+                    raise
+            line = self.parent.wrap_line(line)
+            content += line
+
+        return content
 
 
 if __name__ == '__main__':
-    cl = ColumnLayout(None)
-    cl['first_column'] = TxtColumn(width=30, margins=(1, 1))
-
-    pprint(cl)
 
     pass

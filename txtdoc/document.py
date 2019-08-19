@@ -18,7 +18,7 @@ class TxtDoc(TxtContainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def add_run(self, text, align='left'):
+    def add_run(self, text, align='left') -> TxtParagraph:
         """
         Method that adds text run to the document
         :param text: str
@@ -41,7 +41,16 @@ class TxtDoc(TxtContainer):
         if len(text) > self.inner_width:
             text = text[:self.inner_width]
 
-        text = ('{0:' + c + '^{width}}').format(text, width=self.inner_width)
+        if align == 'center':
+            line_format = '{0:' + c + '^{width}}'
+        elif align == 'left':
+            line_format = '{0:' + c + '<{width}}'
+        elif align == 'right':
+            line_format = '{0:' + c + '>{width}}'
+        else:
+            raise AttributeError('Not allowed align value, it should be of of: center, left, right')
+
+        text = line_format.format(text, width=self.inner_width)
 
         p.append(text)
         self.append(p)
@@ -54,7 +63,7 @@ class TxtDoc(TxtContainer):
         :return: TxtParagraph
         """
 
-        p = self.add_run("")
+        p = self.add_run("\n")
         return p
 
     def page_break(self):

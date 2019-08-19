@@ -65,6 +65,14 @@ class TxtContainer(TxtObject):
         else:
             raise TypeError("Value set for children of TxtContainer must be a subclass of a list")
 
+    def wrap_line(self, s):
+        """
+        Method that add margins and eol char to a string
+        :param s:
+        :return:
+        """
+        return (" " * self.ml) + s + (" " * self.mr) + self.eol
+
     def append(self, value):
         """
         Method that appends an item to the container
