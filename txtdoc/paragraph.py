@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # @Filename : paragraph
-# @Date : 2019-08-14-11-28
 # @Poject: ITC-txtdoc
 # @Author: Piotr Wołoszyn
 # @Website: http://itcave.eu
@@ -8,8 +7,9 @@
 # @License: MIT
 # @Copyright (C) 2019 ITGO Piotr Wołoszyn
 
-from txtdoc.abstract import TxtObject, TxtContainer
+from txtdoc.base import TxtObject, TxtContainer
 from pprint import pprint
+
 
 class TxtBorder(object):
 

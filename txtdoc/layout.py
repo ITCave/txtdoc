@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # @Filename : layout.py
-# @Date : 2019-08-14-16-22
 # @Poject: txtdoc
 # @Author: Piotr Wołoszyn
 # @Website: http://itcave.eu
@@ -10,7 +9,7 @@
 
 from pprint import pprint
 
-from txtdoc.abstract import TxtObject, TxtContainer
+from txtdoc.base import TxtObject, TxtContainer
 from txtdoc.document import TxtDoc
 
 from collections import OrderedDict

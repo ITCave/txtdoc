@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # @Filename : abstract
-# @Date : 2019-08-14-11-22
 # @Poject: ITC-txtdoc
 # @Author: Piotr Wołoszyn
 # @Website: http://itcave.eu

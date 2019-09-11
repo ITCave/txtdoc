@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # @Filename : document
-# @Date : 2019-08-14-11-24
 # @Poject: ITC-txtdoc
 # @Author: Piotr Wołoszyn
 # @Website: http://itcave.eu
@@ -8,7 +7,7 @@
 # @License: MIT
 # @Copyright (C) 2019 ITGO Piotr Wołoszyn
 
-from txtdoc.abstract import TxtContainer
+from txtdoc.base import TxtContainer
 from txtdoc.paragraph import TxtParagraph
 import os
 
@@ -18,7 +17,7 @@ class TxtDoc(TxtContainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def add_run(self, text, align='left') -> TxtParagraph:
+    def p(self, text, align='left') -> TxtParagraph:
         """
         Method that adds text run to the document
         :param text: str
@@ -63,7 +62,7 @@ class TxtDoc(TxtContainer):
         :return: TxtParagraph
         """
 
-        p = self.add_run("\n")
+        p = self.p("\n")
         return p
 
     def page_break(self):
@@ -71,7 +70,7 @@ class TxtDoc(TxtContainer):
         Puts pagebreak in the file
         :return:
         """
-        p = self.add_run("\f")
+        p = self.p("\f")
         return p
 
     def save(self, path, encoding='UTF-8'):
